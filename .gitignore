@@ -1,3 +1,4 @@
 /BACKEND/build
 /BACKEND/node_modules
 **/*/.env
+/BACKEND/.dbdata
