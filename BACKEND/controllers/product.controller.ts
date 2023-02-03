@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deleteById, getProductById, getProducts, newProduct, updateProductById } from "../services/product.service";
+import { countProducts, deleteById, getProductById, getProducts, newProduct, updateProductById } from "../services/product.service";
 import { getCategoryById } from "../services/category.service";
 
 export const newProductHandler = async (req: Request, res: Response) => {
@@ -27,7 +27,12 @@ export const newProductHandler = async (req: Request, res: Response) => {
 
 export const getProductsHandler = async (req: Request, res: Response) => {
     try {
-        const products = await getProducts();
+        const filter = {category: []};
+        if(req.query.categories) {
+            const categories = req.query.categories as string;
+            const filter = {category: categories.split(',')};
+        }
+        const products = await getProducts(filter);
         return res.status(200).send({
             status: 'success',
             products
@@ -63,9 +68,8 @@ export const getProductByIdHandler = async (req: Request, res: Response) => {
 
 export const updateProductByIdHandler = async (req: Request, res: Response) => {
     try {
-        const updatedResult = await updateProductById(req.params.id, req.body);
-        console.log(updatedResult);
-        if(updatedResult.matchedCount < 1) {
+        const updated = await updateProductById(req.params.id, req.body);
+        if(!updated) {
             return res.status(404).send({
                 status: 'failed',
                 msg: 'Not found product by id'
@@ -85,8 +89,8 @@ export const updateProductByIdHandler = async (req: Request, res: Response) => {
 
 export const deleteProductByIdHandler = async (req: Request, res: Response) => {
     try {
-        const deletedResult = await deleteById(req.params.id);
-        if(deletedResult.deletedCount < 1) {
+        const deletedOne = await deleteById(req.params.id);
+        if(!deletedOne) {
             return res.status(404).send({
                 status: 'failed',
                 msg: 'Not found product by ID'
@@ -94,6 +98,21 @@ export const deleteProductByIdHandler = async (req: Request, res: Response) => {
         }
         return res.status(200).send({
             status: 'success'
+        })
+    } catch (error) {
+        return res.status(400).send({
+            status: 'failed',
+            error
+        })
+    }
+}
+
+export const countProductsHandler = async (req: Request, res: Response) => {
+    try {
+        const count = await countProducts(req.body);
+        return res.status(200).send({
+            status: 'success',
+            count
         })
     } catch (error) {
         return res.status(400).send({

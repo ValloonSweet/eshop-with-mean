@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteProductByIdHandler, getProductByIdHandler, getProductsHandler, newProductHandler, updateProductByIdHandler } from "./controllers/product.controller";
+import { countProductsHandler, deleteProductByIdHandler, getProductByIdHandler, getProductsHandler, newProductHandler, updateProductByIdHandler } from "./controllers/product.controller";
 import { deleteCategoryByIdHandler, getCategoriesHandler, getCategoryByIdHandler, newCategoryHandler, updateCategoryByIdHandler } from "./controllers/category.controller";
 
 const BASE_API = process.env.BASE_API;
@@ -13,6 +13,9 @@ router.route(`${BASE_API}/products/:id`)
     .get(getProductByIdHandler)
     .put(updateProductByIdHandler)
     .delete(deleteProductByIdHandler);
+
+router.route(`${BASE_API}/products/get/count`)
+    .get(countProductsHandler);
 
 router.route(`${BASE_API}/categories`)
     .get(getCategoriesHandler)

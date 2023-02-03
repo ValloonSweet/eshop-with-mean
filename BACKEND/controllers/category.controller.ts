@@ -82,10 +82,17 @@ export const updateCategoryByIdHandler = async (req: Request, res: Response) => 
 export const deleteCategoryByIdHandler = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        await deleteCategoryById(id);
-        return res.status(200).send({
-            status: 'success',
-        })
+        const deleted = await deleteCategoryById(id);
+        if(deleted) {
+            return res.status(200).send({
+                status: 'success',
+            })
+        } else {
+            return res.status(404).send({
+                status: 'failed',
+                msg: 'cannot find category'
+            })
+        }
     } catch (error) {
         return res.status(400).send({
             status: 'failed',
