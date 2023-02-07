@@ -3,7 +3,11 @@ import { deleteUserById, getUserByEmail, getUserById, getUsers, newUser, updateU
 
 export const newUserHandler = async (req: Request, res: Response) => {
     try {
-        const user = await newUser(req.body);
+        const password = req.body.password;
+        const user = await newUser({
+            passwordHash: password,
+            ...req.body
+        });
         return res.status(201).send({
             status: true,
             user: {
@@ -12,6 +16,7 @@ export const newUserHandler = async (req: Request, res: Response) => {
             }
         })
     } catch (error) {
+        console.log(error);
         return res.status(500).send({
             status: false,
             error

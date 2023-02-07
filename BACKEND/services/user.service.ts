@@ -17,7 +17,7 @@ export const getUserById = async (id: string) => {
 }
 
 export const getUserByEmail = async (email: string) => {
-    return await User.findOne({email}).select('-passwordHash');
+    return await User.findOne({email});
 }
 
 export const deleteUserById = async (id: string) => {

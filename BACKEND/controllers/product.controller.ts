@@ -15,7 +15,7 @@ export const newProductHandler = async (req: Request, res: Response) => {
         const createdOne = await newProduct(productDto);
         return res.status(201).send({
             status: 'success',
-            category: createdOne
+            product: createdOne
         })
     } catch (error) {
         return res.status(400).send({
@@ -27,10 +27,10 @@ export const newProductHandler = async (req: Request, res: Response) => {
 
 export const getProductsHandler = async (req: Request, res: Response) => {
     try {
-        const filter = {category: []};
+        let filter: {category: any | any[]} = {category: []};
         if(req.query.categories) {
             const categories = req.query.categories as string;
-            const filter = {category: categories.split(',')};
+            filter = {category: categories.split(',')};
         }
         const products = await getProducts(filter);
         return res.status(200).send({
