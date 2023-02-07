@@ -56,9 +56,9 @@ userSchema.methods.comparePassword = async function (candidatePassword: string) 
 userSchema.methods.generateAuthToken = function () {
     const user = this as unknown as IUserDocument;
     const token = jwt.sign({
-        id: user.id,
-        email: user.email,
-        role: user.isAdmin
+            id: user.id,
+            email: user.email,
+            role: user.isAdmin
         },
         process.env.JWT_PRIVATE_KEY || 'secure_jwt_key',
         {expiresIn: '24h'}
