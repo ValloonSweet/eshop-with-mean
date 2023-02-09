@@ -4,7 +4,7 @@ import { deleteCategoryByIdHandler, getCategoriesHandler, getCategoryByIdHandler
 import { deleteUserByIdHandler, getUserByIdHandler, getUsersHandler, newUserHandler, updateUserByIdHandler } from "./controllers/user.controller";
 import { loginHandler } from "./controllers/auth.controller";
 import { restrictUser } from "./middleware/auth.middleware";
-import { newOrderHandler } from "./controllers/order.controller";
+import { deleteOrderHandler, getOrderHandler, getOrdersByUser, getOrdersHandler, newOrderHandler, updateOrderHandler } from "./controllers/order.controller";
 
 const BASE_API = process.env.BASE_API;
 
@@ -44,6 +44,14 @@ router.route(`${BASE_API}/users/:id`)
     .delete(deleteUserByIdHandler);
 
 router.route(`${BASE_API}/orders`)
-    .post(restrictUser, newOrderHandler);
+    .post(restrictUser, newOrderHandler)
+    .get(restrictUser, getOrdersHandler);
 
+router.route(`${BASE_API}/orders/:id`)
+    .get(restrictUser, getOrderHandler)
+    .put(restrictUser, updateOrderHandler)
+    .delete(restrictUser, deleteOrderHandler)
+
+router.route(`${BASE_API}/orders/user/:userid`)
+    .get(restrictUser, getOrdersByUser)
 export default router;

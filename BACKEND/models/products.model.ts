@@ -22,7 +22,7 @@ productSchema.virtual('id').get(function() {
 
 productSchema.set('toJSON', {virtuals: true});
 
-export const Product = mongoose.model('PRODUCT', productSchema);
+export const Product = mongoose.model('Product', productSchema);
 
 export interface ProductDto {
     name?: string;

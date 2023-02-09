@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
     country: {type: String, required: true},
     phone: {type: String, required: true},
     status: {type: String, default: 'Pending'},
-    // totalPrice: {type: Number, required: true},
+    totalPrices: {type: Number, required: true},
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
