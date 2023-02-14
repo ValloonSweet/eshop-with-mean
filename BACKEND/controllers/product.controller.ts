@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { countProducts, deleteById, getProductById, getProducts, newProduct, updateProductById } from "../services/product.service";
 import { getCategoryById } from "../services/category.service";
+import mongoose from "mongoose";
 
 export const newProductHandler = async (req: Request, res: Response) => {
     try {
+        console.log(req.body);
         const category = await getCategoryById(req.body.category);
         if(!category) {
             return res.status(400).send({
@@ -12,7 +14,12 @@ export const newProductHandler = async (req: Request, res: Response) => {
             })
         }
         const productDto = req.body;
-        const createdOne = await newProduct(productDto);
+        const filename = req.file?.filename;
+        const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
+        const createdOne = await newProduct({
+            ...productDto,
+            image: `${basePath}${filename}`
+        });
         return res.status(201).send({
             status: 'success',
             product: createdOne
@@ -23,6 +30,40 @@ export const newProductHandler = async (req: Request, res: Response) => {
             error
         })
     }
+}
+
+export const uploadGalleryImages = async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    if(!mongoose.isValidObjectId(id)) {
+        return res.status(400).send({
+            status: false,
+            msg: 'Invalid Product Id'
+        })
+    }
+
+    const files = req.files as Express.Multer.File[];
+    let imagePaths: string[] = [];
+    const basePath = `${req.protocol}://${req.get('host')}/public/upload/`;
+
+    if(files && files.length > 0) {
+        files.map((file: Express.Multer.File) => {
+            imagePaths.push(`${basePath}${file.filename}`)
+        })
+    }
+
+    const product = await updateProductById(id, {images: imagePaths});
+
+    if(!product) {
+        return res.status(400).send({
+            status: false,
+            msg: 'The product cannot be updated'
+        })
+    }
+
+    return res.status(200).send({
+        status: true
+    })
 }
 
 export const getProductsHandler = async (req: Request, res: Response) => {
@@ -68,10 +109,42 @@ export const getProductByIdHandler = async (req: Request, res: Response) => {
 
 export const updateProductByIdHandler = async (req: Request, res: Response) => {
     try {
-        const updated = await updateProductById(req.params.id, req.body);
+        const id = req.params.id;
+        if(!mongoose.isValidObjectId(id)) return res.status(400).send({
+            status: false,
+            msg: 'Invalid product id'
+        })
+
+        // const _category = await getCategoryById(req.body.category);
+        // if(!_category) return res.status(400).send({
+        //     status: false,
+        //     msg: 'Invalid Category'
+        // })
+
+        const product = await getProductById(id);
+        if(!product) return res.status(400).send({
+            status: false,
+            msg: 'Invalid Product'
+        })
+
+        const file = req.file;
+        let imagePath;
+
+        if(file) {
+            const fileName = file.filename;
+            const basePath = `${req.protocol}://${req.get('host')}/public/upload/`;
+            imagePath = `${basePath}${fileName}`;
+        } else {
+            imagePath = product.image;
+        }
+        const {category, ...body} = req.body;
+
+        const updated = await updateProductById(req.params.id, {
+            image: imagePath
+        });
         if(!updated) {
             return res.status(404).send({
-                status: 'failed',
+                status: false,
                 msg: 'Not found product by id'
             })
         }
@@ -80,6 +153,7 @@ export const updateProductByIdHandler = async (req: Request, res: Response) => {
             status: 'success'
         })
     } catch (error) {
+        console.log(error);
         return res.status(400).send({
             status: 'failed',
             error

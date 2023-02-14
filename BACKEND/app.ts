@@ -15,6 +15,7 @@ app.use(cors());
 app.options('*', cors());
 app.use(express.json());
 app.use(morgan('tiny'));
+app.use('/public/upload', express.static(__dirname + '/public/upload'))
 app.use(router);
 
 app.listen(port, async () => {

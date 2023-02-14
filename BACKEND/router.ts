@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { countProductsHandler, deleteProductByIdHandler, getProductByIdHandler, getProductsHandler, newProductHandler, updateProductByIdHandler } from "./controllers/product.controller";
+import { countProductsHandler, deleteProductByIdHandler, getProductByIdHandler, getProductsHandler, newProductHandler, updateProductByIdHandler, uploadGalleryImages } from "./controllers/product.controller";
 import { deleteCategoryByIdHandler, getCategoriesHandler, getCategoryByIdHandler, newCategoryHandler, updateCategoryByIdHandler } from "./controllers/category.controller";
 import { deleteUserByIdHandler, getUserByIdHandler, getUsersHandler, newUserHandler, updateUserByIdHandler } from "./controllers/user.controller";
 import { loginHandler } from "./controllers/auth.controller";
@@ -8,6 +8,35 @@ import { deleteOrderHandler, getOrderHandler, getOrdersByUser, getOrdersHandler,
 
 const BASE_API = process.env.BASE_API;
 
+
+import multer from 'multer';
+
+const FILE_TYPE_MAP: {[key: string]: string} = {
+    'image/png': 'png',
+    'image/jpeg': 'jpeg',
+    'image/jpg': 'jpg'
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const isValid = FILE_TYPE_MAP[file.mimetype];
+        let uploadError: Error | null = new Error('invalid image type');
+
+        if(isValid) {
+            uploadError = null
+        }
+        cb(uploadError, 'public/upload')
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.split(' ').join('-');
+        const extension = FILE_TYPE_MAP[file.mimetype];
+        cb(null, `${fileName}-${Date.now()}.${extension}`);
+    }
+})
+
+const uploadOptions = multer({storage})
+
+
 const router = Router();
 
 router.route(`${BASE_API}/login`)
@@ -15,11 +44,14 @@ router.route(`${BASE_API}/login`)
 
 router.route(`${BASE_API}/products`)
     .get(getProductsHandler)
-    .post(newProductHandler);
+    .post(uploadOptions.single('image'), newProductHandler);
+
+router.route(`${BASE_API}/gallery-images/:id`)
+    .post(uploadOptions.array('images', 10), uploadGalleryImages);
 
 router.route(`${BASE_API}/products/:id`)
     .get(getProductByIdHandler)
-    .put(updateProductByIdHandler)
+    .put(uploadOptions.single('image'), updateProductByIdHandler)
     .delete(deleteProductByIdHandler);
 
 router.route(`${BASE_API}/products/get/count`)
@@ -54,4 +86,5 @@ router.route(`${BASE_API}/orders/:id`)
 
 router.route(`${BASE_API}/orders/user/:userid`)
     .get(restrictUser, getOrdersByUser)
+
 export default router;
