@@ -9,6 +9,8 @@ import { ProductListComponent } from './pages/product-list/product-list.componen
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { UiModule } from '@ngshop/ui';
+import { AccordionModule } from 'primeng/accordion';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 @NgModule({
   declarations: [
@@ -19,9 +21,11 @@ import { UiModule } from '@ngshop/ui';
     FooterComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
-    UiModule
+    UiModule,
+    AccordionModule
   ],
   providers: [],
   bootstrap: [AppComponent],
