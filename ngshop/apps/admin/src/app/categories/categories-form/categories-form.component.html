@@ -1,0 +1,46 @@
+<p-toast></p-toast>
+<div class="admin-page">
+    <p-card header="Add Category" subheader="You can add or edit categories here">
+        <div class="p-grid mb-3">
+            <div class="p-col-12">
+                <p-toolbar>
+                    <div class="p-toolbar-group-left">
+                    </div>
+                    <div class="p-toolbar-group-right">
+                        <p-button
+                            styleClass="p-button-primary"
+                            class="mr-2"
+                            label="Create"
+                            icon="pi pi-plus"
+                            (onClick)="onSubmit()"
+                        ></p-button>
+                        <p-button
+                            styleClass="p-button-secondary"
+                            label="Cancel"
+                            icon="pi pi-arrow-circle-left"
+                            routerLink="form"
+                        ></p-button>
+                    </div>
+                </p-toolbar>
+            </div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-12">
+                <form [formGroup]="form">
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="p-field col">
+                            <label for="name">Name</label>
+                            <input formControlName="name" type="text" id="name" pInputText />
+                            <small *ngIf="form.controls['name'].invalid && submitted" class="p-error">Name is required</small>
+                        </div>
+                        <div class="p-field col">
+                            <label for="icon">Icon</label>
+                            <input formControlName="icon" type="text" id="icon" pInputText />
+                            <small *ngIf="form.controls['icon'].invalid && submitted" class="p-error">Icon is required</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </p-card>
+</div>
