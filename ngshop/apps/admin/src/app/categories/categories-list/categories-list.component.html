@@ -21,17 +21,23 @@
                 <p-table [value]="categories" styleClass="p-datatable-gridlines">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Icon</th>
+                            <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+                            <th pSortableColumn="icon" style="width:20%">Icon <p-sortIcon field="icon"></p-sortIcon></th>
+                            <th pSortableColumn="color" style="width:20%">Color <p-sortIcon field="color"></p-sortIcon></th>
                             <th></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-category>
                         <tr>
-                            <td>{{category.id}}</td>
                             <td>{{category.name}}</td>
                             <td>{{category.icon}}</td>
+                            <td>
+                                <i
+                                    class="pi pi-circle-on"
+                                    style="font-size: 2rem;"
+                                    [ngStyle]="{color: category.color}"
+                                ></i>
+                            </td>
                             <td>
                                 <button
                                     (click)="deleteCategory(category.id)"
@@ -40,7 +46,13 @@
                                     type="button"
                                     class="p-button-danger mr-2"
                                 ></button>
-                                <button pButton icon="pi pi-pencil" type="button" class="p-button-success"></button>
+                                <button
+                                    (click)="editCategory(category.id)"
+                                    pButton
+                                    icon="pi pi-pencil"
+                                    type="button"
+                                    class="p-button-success"
+                                ></button>
                             </td>
                         </tr>
                     </ng-template>

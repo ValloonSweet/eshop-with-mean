@@ -19,6 +19,7 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
 import { CategoriesFormComponent } from './categories/categories-form/categories-form.component';
@@ -47,7 +48,8 @@ import { MessageService, ConfirmationService } from 'primeng/api';
     TableModule,
     InputTextModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    ColorPickerModule
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent],

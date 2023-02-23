@@ -3,6 +3,7 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { CategoriesService, Category } from '@ngshop/products';
+import { Router } from '@angular/router';
 @Component({
   selector: 'admin-categories-list',
   templateUrl: './categories-list.component.html',
@@ -14,7 +15,8 @@ export class CategoriesListComponent implements OnInit {
   constructor(
     private categoriesService: CategoriesService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) {
   }
 
@@ -22,6 +24,10 @@ export class CategoriesListComponent implements OnInit {
     this.categoriesService.getCategories().subscribe((cats) => {
       this.categories = cats.categories;
     })
+  }
+
+  editCategory(id: string) {
+    this.router.navigateByUrl(`categories/form/${id}`);
   }
 
   deleteCategory(id: string) {
