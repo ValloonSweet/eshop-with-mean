@@ -17,4 +17,8 @@ export class CategoriesService {
   createCategory(category: Category) {
     return this.http.post<{category: Category, status: boolean}>('http://localhost:8000/api/v1/categories', category);
   }
+
+  deleteCategory(id: string) {
+    return this.http.delete<any>(`http://localhost:8000/api/v1/categories/${id}`);
+  }
 }

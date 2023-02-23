@@ -76,15 +76,15 @@ router.route(`${BASE_API}/users/:id`)
     .delete(deleteUserByIdHandler);
 
 router.route(`${BASE_API}/orders`)
-    .post(restrictUser, newOrderHandler)
-    .get(restrictUser, getOrdersHandler);
+    .post(newOrderHandler)
+    .get(getOrdersHandler);
 
 router.route(`${BASE_API}/orders/:id`)
-    .get(restrictUser, getOrderHandler)
-    .put(restrictUser, updateOrderHandler)
-    .delete(restrictUser, deleteOrderHandler)
+    .get(getOrderHandler)
+    .put(updateOrderHandler)
+    .delete(deleteOrderHandler)
 
 router.route(`${BASE_API}/orders/user/:userid`)
-    .get(restrictUser, getOrdersByUser)
+    .get(getOrdersByUser)
 
 export default router;

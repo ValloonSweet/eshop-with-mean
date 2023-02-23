@@ -16,7 +16,9 @@ export class CategoriesFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private categoriesService: CategoriesService,
     private messageService: MessageService
-  ) {}
+  ) {
+
+  }
 
   ngOnInit(): void {
       this.form = this.formBuilder.group({
