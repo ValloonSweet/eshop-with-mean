@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
@@ -21,10 +21,11 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ColorPickerModule } from 'primeng/colorpicker';
 
-import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
-import { CategoriesFormComponent } from './categories/categories-form/categories-form.component';
+import { CategoriesListComponent } from './pages/categories/categories-list/categories-list.component';
+import { CategoriesFormComponent } from './pages/categories/categories-form/categories-form.component';
 import { MessageService, ConfirmationService } from 'primeng/api';
-
+import { ProductsListComponent } from './pages/products/products-list/products-list.component';
+import { ProductsFormComponent } from './pages/products/products-form/products-form.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,8 @@ import { MessageService, ConfirmationService } from 'primeng/api';
     DashboardComponent,
     CategoriesListComponent,
     CategoriesFormComponent,
+    ProductsListComponent,
+    ProductsFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
     InputTextModule,
     ConfirmDialogModule,
     ToastModule,
-    ColorPickerModule
+    ColorPickerModule,
   ],
   providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent],

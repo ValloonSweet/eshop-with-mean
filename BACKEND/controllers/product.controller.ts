@@ -68,7 +68,7 @@ export const uploadGalleryImages = async (req: Request, res: Response) => {
 
 export const getProductsHandler = async (req: Request, res: Response) => {
     try {
-        let filter: {category: any | any[]} = {category: []};
+        let filter: any = {};
         if(req.query.categories) {
             const categories = req.query.categories as string;
             filter = {category: categories.split(',')};
